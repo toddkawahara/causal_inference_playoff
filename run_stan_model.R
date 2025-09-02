@@ -11,6 +11,15 @@ df_gamelogs <- read.csv('df_gamelogs.csv')
 df_gamelogs <- df_gamelogs %>%
   mutate(fip_presep_std = scale(fip_presep)[,1], 
          id = as.numeric(factor(mlbam_playerid)))
+# distribution of FIP
+ggplot(df_gamelogs, aes(x=fip)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 100, fill = 'steelblue') + 
+  geom_density(size = 1) + 
+  theme_classic() + 
+  labs(title = 'Game FIP Distribution') + 
+  xlim(-5, 25) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05)))
+
 
 # load stan models
 mod_tdist <- cmdstan_model('model_tdist.stan')
